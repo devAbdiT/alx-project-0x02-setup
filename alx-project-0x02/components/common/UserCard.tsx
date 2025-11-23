@@ -1,63 +1,84 @@
+import React from "react";
 import { UserProps } from "@/interfaces";
 
 const UserCard: React.FC<UserProps> = ({
   id,
   name,
-  username,
   email,
   address,
   phone,
   website,
   company,
+  className = "",
 }) => {
+  const formatPhone = (phoneNumber: string) => {
+    return phoneNumber
+      .replace(/\D/g, "")
+      .replace(/(\d{1})(\d{3})(\d{3})(\d{4})/, "$1-$2-$3-$4");
+  };
+
+  const getInitials = (userName: string) => {
+    return userName
+      .split(" ")
+      .map((word) => word[0])
+      .join("")
+      .toUpperCase()
+      .slice(0, 2);
+  };
+
   return (
-    <div className="border border-gray-300 rounded-lg p-4 shadow-sm bg-white">
-      {/* User Basic Info */}
-      <div className="mb-4">
-        <h3 className="text-lg font-bold text-gray-800">{name}</h3>
-        <p className="text-gray-600">@{username}</p>
-        <p className="text-blue-600">
-          <a href={`mailto:${email}`}>{email}</a>
-        </p>
-        <p className="text-sm text-gray-500">ID: {id}</p>
+    <div className={`user-card ${className}`}>
+      <div className="user-card-header">
+        <div className="user-avatar">{getInitials(name)}</div>
+        <div className="user-basic-info">
+          <h3 className="user-name">{name}</h3>
+          <p className="user-email">{email}</p>
+          <span className="user-id">ID: {id}</span>
+        </div>
       </div>
 
-      {/* Contact Info */}
-      <div className="mb-4">
-        <h4 className="font-semibold text-gray-700 mb-1">Contact</h4>
-        <p className="text-sm">📞 {phone}</p>
-        <p className="text-sm">
-          🌐{" "}
-          <a
-            href={`http://${website}`}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-blue-600 hover:underline"
-          >
-            {website}
-          </a>
-        </p>
+      <div className="user-details">
+        <div className="detail-section">
+          <h4 className="section-title">Contact Information</h4>
+          <div className="detail-item">
+            <span className="detail-label">Phone:</span>
+            <span className="detail-value">{formatPhone(phone)}</span>
+          </div>
+          <div className="detail-item">
+            <span className="detail-label">Website:</span>
+            <a
+              href={`http://${website}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="detail-link"
+            >
+              {website}
+            </a>
+          </div>
+        </div>
+
+        <div className="detail-section">
+          <h4 className="section-title">Address</h4>
+          <div className="address-info">
+            <p>{address.street}</p>
+            <p>{address.suite}</p>
+            <p>
+              {address.city}, {address.zipcode}
+            </p>
+          </div>
+        </div>
+
+        <div className="detail-section">
+          <h4 className="section-title">Company</h4>
+          <div className="company-info">
+            <p className="company-name">{company.name}</p>
+          </div>
+        </div>
       </div>
 
-      {/* Address Details */}
-      <div className="mb-4">
-        <h4 className="font-semibold text-gray-700 mb-1">Address</h4>
-        <p className="text-sm">{address.street}</p>
-        <p className="text-sm">{address.suite}</p>
-        <p className="text-sm">
-          {address.city}, {address.zipcode}
-        </p>
-        <p className="text-xs text-gray-500 mt-1">
-          📍 {address.geo.lat}, {address.geo.lng}
-        </p>
-      </div>
-
-      {/* Company Info */}
-      <div>
-        <h4 className="font-semibold text-gray-700 mb-1">Company</h4>
-        <p className="text-sm font-medium">{company.name}</p>
-        <p className="text-sm text-gray-600 italic">"{company.catchPhrase}"</p>
-        <p className="text-xs text-gray-500 mt-1">{company.bs}</p>
+      <div className="user-card-actions">
+        <button className="action-btn primary">View Profile</button>
+        <button className="action-btn secondary">Send Message</button>
       </div>
     </div>
   );
