@@ -1,7 +1,9 @@
 import React, { useState } from "react";
-import Card from "@/components/common/Card";
-import PostModal from "@/components/common/PostModal";
-import { type PostData } from "@/interfaces";
+import { Link } from "react-router-dom";
+import Card from "../components/common/Card";
+import PostModal from "../components/common/PostModal";
+import Header from "../components/layout/Header";
+import { PostData } from "../interfaces";
 
 const HomePage: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -26,30 +28,33 @@ const HomePage: React.FC = () => {
   const closeModal = () => setIsModalOpen(false);
 
   return (
-    <div className="home-page">
-      <div className="page-header">
-        <h1>Welcome to Our Application</h1>
-        <button className="add-post-button" onClick={openModal}>
-          + Add New Post
-        </button>
-      </div>
+    <div className="app">
+      <Header />
+      <div className="home-page">
+        <div className="page-header">
+          <h1>Welcome to Our Application</h1>
+          <button className="add-post-button" onClick={openModal}>
+            + Add New Post
+          </button>
+        </div>
 
-      <div className="cards-container">
-        {posts.map((post, index) => (
-          <Card
-            key={index}
-            title={post.title}
-            content={post.content}
-            className={`post-card post-card-${index % 4}`}
-          />
-        ))}
-      </div>
+        <div className="cards-container">
+          {posts.map((post, index) => (
+            <Card
+              key={index}
+              title={post.title}
+              content={post.content}
+              className={`post-card post-card-${index % 4}`}
+            />
+          ))}
+        </div>
 
-      <PostModal
-        isOpen={isModalOpen}
-        onClose={closeModal}
-        onSubmit={handleAddPost}
-      />
+        <PostModal
+          isOpen={isModalOpen}
+          onClose={closeModal}
+          onSubmit={handleAddPost}
+        />
+      </div>
     </div>
   );
 };
