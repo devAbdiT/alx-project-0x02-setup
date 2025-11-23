@@ -1,4 +1,3 @@
-// Comment
 export interface CardProps {
   title: string;
   content: string;
@@ -15,6 +14,7 @@ export interface PostModalProps {
   onClose: () => void;
   onSubmit: (postData: PostData) => void;
 }
+
 export interface ButtonProps {
   children: React.ReactNode;
   onClick?: () => void;
@@ -24,7 +24,41 @@ export interface ButtonProps {
   disabled?: boolean;
   className?: string;
 }
+
+export interface PostProps {
+  id: number;
+  title: string;
+  content: string;
+  userId: number;
+  className?: string;
+}
+
+export interface ApiPost {
+  userId: number;
+  id: number;
+  title: string;
+  body: string;
+}
+
 export interface UserProps {
+  id: number;
+  name: string;
+  email: string;
+  address: {
+    street: string;
+    suite: string;
+    city: string;
+    zipcode: string;
+  };
+  phone: string;
+  website: string;
+  company: {
+    name: string;
+  };
+  className?: string;
+}
+
+export interface ApiUser {
   id: number;
   name: string;
   username: string;
