@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import Card from "../components/common/Card";
-import PostModal from "../components/common/PostModal";
-import Header from "../components/layout/Header";
-import { PostData } from "../interfaces";
+import Card from "@/components/common/Card";
+import PostModal from "@/components/common/PostModal";
+import Header from "@/components/layout/Header";
+import { PostData } from "@/interfaces";
 
 const HomePage: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
