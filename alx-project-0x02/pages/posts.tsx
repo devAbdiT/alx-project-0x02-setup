@@ -7,6 +7,7 @@ const PostsPage: React.FC = () => {
   const [posts, setPosts] = useState<ApiPost[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
+  const [searchTerm, setSearchTerm] = useState<string>("");
 
   // Fetch posts from JSONPlaceholder API
   useEffect(() => {
@@ -22,7 +23,7 @@ const PostsPage: React.FC = () => {
         }
 
         const data: ApiPost[] = await response.json();
-        setPosts(data.slice(0, 12)); // Limit to 12 posts for better performance
+        setPosts(data.slice(0, 20)); // Limit to 20 posts for better performance
       } catch (err) {
         setError(err instanceof Error ? err.message : "An error occurred");
       } finally {
@@ -47,13 +48,20 @@ const PostsPage: React.FC = () => {
       }
 
       const data: ApiPost[] = await response.json();
-      setPosts(data.slice(0, 12));
+      setPosts(data.slice(0, 20));
     } catch (err) {
       setError(err instanceof Error ? err.message : "An error occurred");
     } finally {
       setLoading(false);
     }
   };
+
+  // Filter posts based on search term
+  const filteredPosts = posts.filter(
+    (post) =>
+      post.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      post.body.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   if (loading) {
     return (
@@ -100,23 +108,42 @@ const PostsPage: React.FC = () => {
               Refresh Posts
             </button>
           </div>
-          <div className="posts-stats">
-            <span>Showing {posts.length} posts</span>
+
+          <div className="search-container">
+            <input
+              type="text"
+              placeholder="Search posts by title or content..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="search-input"
+            />
+            <div className="posts-stats">
+              <span>
+                Showing {filteredPosts.length} of {posts.length} posts
+              </span>
+            </div>
           </div>
         </div>
 
         <div className="posts-grid">
-          {posts.map((post) => (
+          {filteredPosts.map((post) => (
             <PostCard
               key={post.id}
               id={post.id}
               title={post.title}
               content={post.body}
               userId={post.userId}
-              className={`post-card-${post.userId % 6}`} // Different colors for different users
+              className={`post-card-${post.userId % 6}`}
             />
           ))}
         </div>
+
+        {filteredPosts.length === 0 && searchTerm && (
+          <div className="no-results">
+            <h3>No posts found</h3>
+            <p>Try adjusting your search terms</p>
+          </div>
+        )}
       </div>
     </div>
   );
